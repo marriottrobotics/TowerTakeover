@@ -55,19 +55,44 @@ using namespace pros;
 // using namespace pros::literals;
 // using namespace okapi;
 
+using namespace std;
 /**
  * Prototypes for the competition control tasks are redefined here to ensure
  * that they can be called from user code (i.e. calling autonomous from a
  * button press in opcontrol() for testing purposes).
  */
+ #define mtr_s_p E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES
+ #define mtr_s_n E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES
+ #define torque_p E_MOTOR_GEARSET_36, 0, MOTOR_ENCODER_DEGREES
+ #define torque_n E_MOTOR_GEARSET_36, 1, MOTOR_ENCODER_DEGREES
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 void autonomous(void);
 void initialize(void);
 void disabled(void);
 void competition_initialize(void);
 void opcontrol(void);
+void initFile(FILE *fp, double battery, double ctrbat);
+extern ADIAnalogIn sensor;
+extern ADIAnalogIn auto_select;
+
+extern Controller master;
+
+extern Motor left_front;
+extern Motor right_front;
+extern Motor left_back;
+extern Motor right_back;
+extern Motor dr4b_left;
+extern Motor dr4b_right;
+extern Motor claw_pivot;
+extern Motor claw;
+
+extern bool s_side;
+extern bool s_pos;
+extern bool override;
 
 #ifdef __cplusplus
 }
