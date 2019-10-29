@@ -19,16 +19,14 @@ void initialize() {
   Motor right_back(20, mtr_s_n);
   Motor dr4b_left(15, torque_p);
   Motor dr4b_right(12, torque_n);
-  Motor claw_pivot(17,torque_p);
-  Motor claw(14, torque_p);
+  Motor claw_right(17,torque_p);
+  Motor claw_left(14, torque_n);
   left_front.set_brake_mode(MOTOR_BRAKE_COAST);
   right_front.set_brake_mode(MOTOR_BRAKE_COAST);
   left_back.set_brake_mode(MOTOR_BRAKE_COAST);
   right_back.set_brake_mode(MOTOR_BRAKE_COAST);
   dr4b_left.set_brake_mode(MOTOR_BRAKE_HOLD);
   dr4b_right.set_brake_mode(MOTOR_BRAKE_HOLD);
-  claw.set_brake_mode(MOTOR_BRAKE_BRAKE);
-  claw_pivot.set_brake_mode(MOTOR_BRAKE_HOLD);
 }
 
 /**

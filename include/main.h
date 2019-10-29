@@ -87,8 +87,8 @@ extern Motor left_back;
 extern Motor right_back;
 extern Motor dr4b_left;
 extern Motor dr4b_right;
-extern Motor claw_pivot;
-extern Motor claw;
+extern Motor claw_left;
+extern Motor claw_right;
 
 extern bool s_side;
 extern bool s_pos;

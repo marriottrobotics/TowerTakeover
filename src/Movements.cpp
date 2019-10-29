@@ -11,8 +11,8 @@ Motor left_back(11, mtr_s_p);
 Motor right_back(20, mtr_s_n);
 Motor dr4b_left(15, torque_p);
 Motor dr4b_right(12, torque_n);
-Motor claw_pivot(17,torque_p);
-Motor claw(14, torque_p);
+Motor claw_right(17,torque_p);
+Motor claw_left(14, torque_n);
 
 extern bool s_side; //true = red
 extern bool s_pos; //true = mat side
@@ -63,7 +63,6 @@ void Movement::m_turn_up(int distance, int speed){
       right_back.move_relative(-distance, speed);
     }
     while(abs(right_back.get_position()-right_back.get_target_position()) >= 10){
-      update_shit();
       //Do nothing
       delay(20);
     }
@@ -83,7 +82,6 @@ void Movement::m_slide_up(int distance, int speed){
     }
     while(abs(right_back.get_position()-right_back.get_target_position()) >= 10){
       //Do nothing
-      update_shit();
       delay(20);
     }
 
@@ -137,7 +135,6 @@ void Movement::m_slide_up(int distance, int speed){
         left_back.move_velocity(sin_speed);
         right_back.move_velocity(sin_speed);
         delay(20);
-        update_shit();
       }
     } else {
 //backwards
@@ -165,7 +162,6 @@ void Movement::m_slide_up(int distance, int speed){
         left_back.move_velocity(-sin_speed);
         right_back.move_velocity(-sin_speed);
         delay(20);
-        update_shit();
       }
     }
     left_front.move_velocity(0);
@@ -175,51 +171,50 @@ void Movement::m_slide_up(int distance, int speed){
 
 }
 
-void Movement::m_delay(int n_delay){
-  for(int i = 0; i < n_delay / 20; i++)
-  {
-    //code here
-    Movement::update_shit();
-    delay(20);
+void Movement::dr4b_move(double degrees, int speed){
+  int accuracy = 10;
+  dr4b_left.move_absolute(degrees, speed);
+  dr4b_right.move_absolute(degrees, speed);
+  while(dr4b_left.get_position() > degrees + accuracy || dr4b_left.get_position() < degrees - accuracy){
+    //Wait
   }
 }
 
-void Movement::update_shit(){
-  float lerp = 26;
-  if(m_clawrot){
-    cout << "TRUE " << "\n";
+void Movement::dr4b_claw(double degrees){
+  bool positive;
+  if(dr4b_left.get_position() - degrees > 0){
+    positive = true;
   } else {
-    cout << "False " << "\n";
+    positive = false;
   }
-  cout << "mtr: " << claw_pivot.get_target_velocity() << "\n";
-  if(m_clawrot == true){
-  if(abs(sensor.get_value() - 1900) > 10){
-  if(sensor.get_value() > 1900)
-  {
-    claw_pivot.move_velocity(abs(sensor.get_value() - 1900)/lerp);
-  }else
-  {
-    claw_pivot.move_velocity(-abs(sensor.get_value() - 1900)/lerp);
+  int accuracy = 10;
+
+  if(positive == true){
+    dr4b_left.move_absolute(degrees, 25);
+    dr4b_right.move_absolute(degrees, 25);
+    claw_left.move_velocity(-100);
+    claw_left.move_velocity(-100);
+  } else {
+    dr4b_left.move_absolute(degrees, -25);
+    dr4b_right.move_absolute(degrees, -25);
+    claw_left.move_velocity(100);
+    claw_left.move_velocity(100);
   }
-} else {claw_pivot.move_velocity(0);}
-}else
-{
-  if(abs(sensor.get_value() - 300) > 10){
-  if(sensor.get_value() < 300)
-  {
-    claw_pivot.move_velocity(-abs(sensor.get_value() - 300)/lerp);
-  }else
-  {
-    claw_pivot.move_velocity(abs(sensor.get_value() - 300)/lerp);
+
+  while(dr4b_left.get_position() > degrees + accuracy || dr4b_left.get_position() < degrees - accuracy){
+    //Wait
   }
- } else {claw_pivot.move_velocity(0);}
-}
+  claw_left.move_velocity(0);
+  claw_left.move_velocity(0);
 }
 
-void Movement::claw_rot(int c_rot){
-  if(c_rot == 1){
-    m_clawrot = true;
-  } else {
-    m_clawrot = false;
-  }
+void Movement::claw(int speed){
+  claw_left.move_velocity(speed);
+  claw_right.move_velocity(speed);
+}
+
+void Movement::move_cm(double distance, double speed, double distance_sustained_speed){
+  distance *= (29.845/360);
+  distance_sustained_speed *= (29.845/360);
+  m_move_sin(distance, speed, distance_sustained_speed);
 }

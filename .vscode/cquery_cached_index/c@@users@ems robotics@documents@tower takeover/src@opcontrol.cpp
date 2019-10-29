@@ -25,10 +25,15 @@ void opcontrol() {
 	Motor right_front(10, mtr_s_p);
 	Motor left_back(11, mtr_s_p);
 	Motor right_back(20, mtr_s_n);
-	Motor dr4b_left(15, torque_p);
-	Motor dr4b_right(12, torque_n);
-	Motor claw_pivot(17,torque_p);
-	Motor claw(14, torque_p);
+	Motor dr4b_left(12, torque_p);
+	Motor dr4b_right(15, torque_n);
+	Motor claw_right(17,torque_p);
+  Motor claw_left(14, torque_n);
+
+	claw_right.set_brake_mode(MOTOR_BRAKE_HOLD);
+	claw_left.set_brake_mode(MOTOR_BRAKE_HOLD);
+	dr4b_left.set_brake_mode(MOTOR_BRAKE_HOLD);
+	dr4b_right.set_brake_mode(MOTOR_BRAKE_HOLD);
 
 	int tower = 0;
 	int mtr1 = 0;
@@ -123,7 +128,7 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 		}
 		//pivot claw
 
-
+/*
 		if(master.get_digital(DIGITAL_R1) == 1){
 			if(R2slime == false){
 				R2slime = true;
@@ -187,7 +192,7 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 			R1slime = false;
 		}
 
-/*		if(master.get_digital(DIGITAL_UP) == 1){
+		if(master.get_digital(DIGITAL_UP) == 1){
 			if(Upslime == false){
 				Upslime = true;
 			}
@@ -201,8 +206,32 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 
 		#define ANALOG_SENSOR_PORT 1
 
+		if(master.get_digital(DIGITAL_R1) == 1){
+			claw_right.move_velocity(100);
+			claw_left.move_velocity(100);
+		} else if(master.get_digital(DIGITAL_R2) == 1){
+			claw_right.move_velocity(-100);
+			claw_left.move_velocity(-100);
+		} else {
+			claw_right.move_velocity(0);
+			claw_left.move_velocity(0);
+		}
 
+		if(master.get_digital(DIGITAL_UP) == 1){
+			dr4b_left.move_velocity(25);
+			dr4b_right.move_velocity(25);
 
+			claw_left.move_velocity(-100);
+			claw_right.move_velocity(-100);
+		} else if(master.get_digital(DIGITAL_DOWN) == 1){
+			dr4b_left.move_velocity(-100);
+			dr4b_right.move_velocity(-100);
+
+			claw_left.move_velocity(60);
+			claw_right.move_velocity(60);
+		} else {
+
+		}
 
 
 
@@ -334,7 +363,7 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 			fprintf(fp, "|%lf", dr4b_right.get_temperature());
 			fprintf(fp, "|%lf", dr4b_right.get_position());
 			fprintf(fp, "|%lf", dr4b_right.get_actual_velocity());
-
+/*
 			fprintf(fp, "|Claw Rotate");
 			fprintf(fp, "|%lf", claw_pivot.get_power());
 			fprintf(fp, "|%d", claw_pivot.get_voltage());
@@ -350,7 +379,7 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 			fprintf(fp, "|%lf", claw.get_temperature());
 			fprintf(fp, "|%lf", claw.get_position());
 			fprintf(fp, "|%lf", claw.get_actual_velocity());
-
+*/
 			fprintf(fp, "\r");
 			fclose(fp);
 		}
