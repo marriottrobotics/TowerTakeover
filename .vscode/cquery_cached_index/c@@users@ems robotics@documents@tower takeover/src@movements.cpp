@@ -9,8 +9,8 @@ Motor left_front(1, mtr_s_n);
 Motor right_front(10, mtr_s_p);
 Motor left_back(11, mtr_s_p);
 Motor right_back(20, mtr_s_n);
-Motor dr4b_left(15, torque_p);
-Motor dr4b_right(12, torque_n);
+Motor dr4b_left(12, torque_p);
+Motor dr4b_right(15, torque_n);
 Motor claw_right(17,torque_p);
 Motor claw_left(14, torque_n);
 
@@ -175,9 +175,7 @@ void Movement::dr4b_move(double degrees, int speed){
   int accuracy = 10;
   dr4b_left.move_absolute(degrees, speed);
   dr4b_right.move_absolute(degrees, speed);
-  while(dr4b_left.get_position() > degrees + accuracy || dr4b_left.get_position() < degrees - accuracy){
-    //Wait
-  }
+
 }
 
 void Movement::dr4b_claw(double degrees){
@@ -192,13 +190,13 @@ void Movement::dr4b_claw(double degrees){
   if(positive == true){
     dr4b_left.move_absolute(degrees, 25);
     dr4b_right.move_absolute(degrees, 25);
-    claw_left.move_velocity(-100);
-    claw_left.move_velocity(-100);
+    claw_left.move_velocity(100);
+    claw_right.move_velocity(100);
   } else {
     dr4b_left.move_absolute(degrees, -25);
     dr4b_right.move_absolute(degrees, -25);
-    claw_left.move_velocity(100);
-    claw_left.move_velocity(100);
+    claw_left.move_velocity(-100);
+    claw_right.move_velocity(-100);
   }
 
   while(dr4b_left.get_position() > degrees + accuracy || dr4b_left.get_position() < degrees - accuracy){
@@ -214,7 +212,7 @@ void Movement::claw(int speed){
 }
 
 void Movement::move_cm(double distance, double speed, double distance_sustained_speed){
-  distance *= (29.845/360);
-  distance_sustained_speed *= (29.845/360);
+  distance *= (360/29.845);
+  distance_sustained_speed *= (360/29.845);
   m_move_sin(distance, speed, distance_sustained_speed);
 }
