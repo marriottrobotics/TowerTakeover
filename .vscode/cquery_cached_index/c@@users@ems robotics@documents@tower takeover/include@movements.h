@@ -13,6 +13,7 @@ namespace Movement{
   void m_delay(int n_delay);
   void dr4b_move(double degrees, int speed);
   void dr4b_claw(double degrees);
+  void dr4b_safe(double degrees);
   void claw(int speed);
   void move_cm(double distance, double speed, double distance_sustained_speed);
 

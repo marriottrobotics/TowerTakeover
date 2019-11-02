@@ -52,7 +52,6 @@ void autonomous() {
     dr4b_move(100, 100);
     delay(500);
     claw(0);
-    delay(200);
 
     move_cm(9, 100, 5);
 
@@ -60,28 +59,37 @@ void autonomous() {
 
     dr4b_move(10, 75);
     claw(100);
-    delay(1000);
-    claw(0);
-    dr4b_move(450, 100);
-    move_cm(52, 75, 30);
-    dr4b_claw(60);
-    claw(100);
-    delay(200);
-    dr4b_move(80, 100);
-    delay(200);
-    m_turn_up(570, 75);
-    claw(0);
-    move_cm(65, 75, 30);
-    m_slide_up(-410, 100);
-    m_turn_up(335, 100);
-    move_cm(30, 100, 10);
-    delay(200);
-    dr4b_move(0, 30);
     delay(500);
+    claw(0);
+    dr4b_move(380, 75);
+    move_cm(53, 100, 35);
+    dr4b_claw(70);
+    claw(100);
+    dr4b_move(90, 100);
+    move_cm(-60, 200, 40);
+    claw(0);
+    m_turn_up(570, 75);
+
+    m_slide_up(-140, 150);
+    move_cm(74, 150, 65);
+    delay(100);
+    dr4b_move(0, 30);
+    delay(200);
+    move_cm(-0.5, 40, 0.4);
     dr4b_claw(450);
     delay(300);
     move_cm(-20, 75, 10);
 
+/*    m_slide_up(-550, 100);
+    m_turn_up(300, 100);
+    move_cm(23, 100, 10);
+    delay(200);
+    dr4b_move(0, 30);
+    delay(500);
+    dr4b_safe(450);
+    delay(300);
+    move_cm(-20, 75, 10);
+*/
 
   } else { //================================================================================================================
 /*

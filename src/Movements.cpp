@@ -203,16 +203,72 @@ void Movement::dr4b_claw(double degrees){
     //Wait
   }
   claw_left.move_velocity(0);
-  claw_left.move_velocity(0);
+  claw_right.move_velocity(0);
 }
 
 void Movement::claw(int speed){
   claw_left.move_velocity(speed);
   claw_right.move_velocity(speed);
+  delay(20);
 }
 
 void Movement::move_cm(double distance, double speed, double distance_sustained_speed){
   distance *= (360/29.845);
   distance_sustained_speed *= (360/29.845);
   m_move_sin(distance, speed, distance_sustained_speed);
+}
+
+void Movement::dr4b_safe(double degrees){
+  bool positive;
+  if(dr4b_left.get_position() - degrees > 0){
+    positive = true;
+  } else {
+    positive = false;
+  }
+  int accuracy = 10;
+
+  if(positive == true){
+    dr4b_left.move_absolute(degrees, 25);
+    dr4b_right.move_absolute(degrees, 25);
+    claw_left.move_velocity(100);
+    claw_right.move_velocity(100);
+  } else {
+    dr4b_left.move_absolute(degrees, -25);
+    dr4b_right.move_absolute(degrees, -25);
+    claw_left.move_velocity(-100);
+    claw_right.move_velocity(-100);
+  }
+
+  while(dr4b_left.get_position() > degrees + accuracy || dr4b_left.get_position() < degrees - accuracy){
+    //safety
+    if(abs(abs(dr4b_left.get_position()) - abs(dr4b_right.get_target_position())) > 60){
+        //right lower
+        double left = dr4b_left.get_position();
+        double right = dr4b_right.get_position();
+        double mid = (left + right) / 2;
+
+        dr4b_left.move_absolute(mid, 25);
+        dr4b_right.move_absolute(mid, 25);
+        claw_left.move_velocity(0);
+        claw_right.move_velocity(0);
+        m_async(-10, 30);
+        delay(300);
+
+        if(positive == true){
+          dr4b_left.move_absolute(degrees, 25);
+          dr4b_right.move_absolute(degrees, 25);
+          claw_left.move_velocity(100);
+          claw_right.move_velocity(100);
+        } else {
+          dr4b_left.move_absolute(degrees, -25);
+          dr4b_right.move_absolute(degrees, -25);
+          claw_left.move_velocity(-100);
+          claw_right.move_velocity(-100);
+        }
+    } else {
+
+    }
+  }
+  claw_left.move_velocity(0);
+  claw_left.move_velocity(0);
 }
