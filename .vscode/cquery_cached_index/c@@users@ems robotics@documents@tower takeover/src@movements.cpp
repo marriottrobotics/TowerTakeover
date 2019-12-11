@@ -5,14 +5,14 @@
 ADIAnalogIn auto_select(2);
 pros::ADIAnalogIn sensor (1);
 Controller master(CONTROLLER_MASTER);
-Motor left_front(1, mtr_s_n);
 Motor right_front(10, mtr_s_p);
-Motor left_back(11, mtr_s_p);
+Motor left_front(1, mtr_s_n);
 Motor right_back(20, mtr_s_n);
-Motor dr4b_left(12, torque_p);
+Motor left_back(11, mtr_s_p);
 Motor dr4b_right(15, torque_n);
-Motor claw_right(17,torque_p);
-Motor claw_left(14, torque_n);
+Motor dr4b_left(12, torque_p);
+Motor claw_right(17,mtr_s_p);
+Motor claw_left(14, mtr_s_n);
 
 extern bool s_side; //true = red
 extern bool s_pos; //true = mat side

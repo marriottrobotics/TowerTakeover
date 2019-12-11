@@ -85,10 +85,10 @@ extern Motor left_front;
 extern Motor right_front;
 extern Motor left_back;
 extern Motor right_back;
-extern Motor dr4b_left;
-extern Motor dr4b_right;
-extern Motor claw_left;
-extern Motor claw_right;
+extern Motor loader_left;
+extern Motor loader_right;
+extern Motor score;
+extern Motor rot_loader;
 
 extern bool s_side;
 extern bool s_pos;

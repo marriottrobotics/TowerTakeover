@@ -5,14 +5,14 @@
 ADIAnalogIn auto_select(2);
 pros::ADIAnalogIn sensor (1);
 Controller master(CONTROLLER_MASTER);
-Motor left_front(1, mtr_s_n);
-Motor right_front(10, mtr_s_p);
-Motor left_back(11, mtr_s_p);
-Motor right_back(20, mtr_s_n);
-Motor dr4b_left(12, torque_p);
-Motor dr4b_right(15, torque_n);
-Motor claw_right(17,torque_p);
-Motor claw_left(14, torque_n);
+Motor left_front(4, mtr_s_p);
+Motor right_front(3, mtr_s_n);
+Motor left_back(2, mtr_s_p);
+Motor right_back(1, mtr_s_n);
+Motor loader_left(7, mtr_s_n);
+Motor loader_right(8, mtr_s_p);
+Motor score(5, torque_p);
+Motor rot_loader(6, torque_n);
 
 extern bool s_side; //true = red
 extern bool s_pos; //true = mat side
@@ -171,6 +171,33 @@ void Movement::m_slide_up(int distance, int speed){
 
 }
 
+/*
+void Movement::tray_up(bool tray_pos){/*
+  if(tray_pos == true){
+    score.move_absolute(720);
+  } else {
+    score.move_absolute(0);
+  }
+}
+
+void Movement::intake(int speed){
+  loader_left.move_velocity(speed);
+  loader_right.move_velocity(speed);
+
+}
+
+void Movement::intake_rot(bool pos){
+
+  if(pos == true){
+    rot_loader.move_absolute(60, 100);
+  } else {
+    rot_loader.move_absolute(-10, 100);
+  }
+
+}
+
+
+
 void Movement::dr4b_move(double degrees, int speed){
   int accuracy = 10;
   dr4b_left.move_absolute(degrees, speed);
@@ -211,13 +238,14 @@ void Movement::claw(int speed){
   claw_right.move_velocity(speed);
   delay(20);
 }
+*/
 
 void Movement::move_cm(double distance, double speed, double distance_sustained_speed){
   distance *= (360/29.845);
   distance_sustained_speed *= (360/29.845);
   m_move_sin(distance, speed, distance_sustained_speed);
 }
-
+/*
 void Movement::dr4b_safe(double degrees){
   bool positive;
   if(dr4b_left.get_position() - degrees > 0){
@@ -272,3 +300,4 @@ void Movement::dr4b_safe(double degrees){
   claw_left.move_velocity(0);
   claw_left.move_velocity(0);
 }
+*/

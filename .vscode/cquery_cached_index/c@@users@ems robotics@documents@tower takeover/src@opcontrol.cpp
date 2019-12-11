@@ -27,8 +27,8 @@ void opcontrol() {
 	Motor right_back(20, mtr_s_n);
 	Motor dr4b_left(12, torque_p);
 	Motor dr4b_right(15, torque_n);
-	Motor claw_right(17,torque_p);
-  Motor claw_left(14, torque_n);
+	Motor claw_right(17, mtr_s_p);
+  Motor claw_left(14, mtr_s_n);
 
 	claw_right.set_brake_mode(MOTOR_BRAKE_HOLD);
 	claw_left.set_brake_mode(MOTOR_BRAKE_HOLD);
@@ -76,10 +76,10 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 	while (true) {
 
 		//speed mode
-		if(master.get_digital(DIGITAL_A) == 1){
+		if(master.get_digital(DIGITAL_B) == 1){
 			speed = 1;
 		}else
-		if(master.get_digital(DIGITAL_B) == 1){
+		if(master.get_digital(DIGITAL_DOWN) == 1){
 			speed = 2;
 	  }
 
@@ -207,25 +207,25 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 		#define ANALOG_SENSOR_PORT 1
 
 		if(master.get_digital(DIGITAL_R1) == 1){
-			claw_right.move_velocity(100);
-			claw_left.move_velocity(100);
+			claw_right.move_velocity(200);
+			claw_left.move_velocity(200);
 		} else if(master.get_digital(DIGITAL_R2) == 1){
-			claw_right.move_velocity(-100);
-			claw_left.move_velocity(-100);
+			claw_right.move_velocity(-200);
+			claw_left.move_velocity(-200);
 		} else {
 			claw_right.move_velocity(0);
 			claw_left.move_velocity(0);
 		}
 
-		if(master.get_digital(DIGITAL_UP) == 1){
-			dr4b_left.move_velocity(25);
-			dr4b_right.move_velocity(25);
+		if(master.get_digital(DIGITAL_Y) == 1){
+			dr4b_left.move_velocity(24);
+			dr4b_right.move_velocity(24);
 
-			claw_left.move_velocity(-100);
-			claw_right.move_velocity(-100);
-		} else if(master.get_digital(DIGITAL_DOWN) == 1){
-			dr4b_left.move_velocity(-100);
-			dr4b_right.move_velocity(-100);
+			claw_left.move_velocity(-200);
+			claw_right.move_velocity(-200);
+		} else if(master.get_digital(DIGITAL_RIGHT) == 1){
+			dr4b_left.move_velocity(-200);
+			dr4b_right.move_velocity(-200);
 
 			claw_left.move_velocity(60);
 			claw_right.move_velocity(60);

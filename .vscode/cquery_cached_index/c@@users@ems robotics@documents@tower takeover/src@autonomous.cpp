@@ -27,8 +27,8 @@ void autonomous() {
   Motor right_back(20, mtr_s_n);
   Motor dr4b_left(12, torque_p);
   Motor dr4b_right(15, torque_n);
-  Motor claw_right(17,torque_p);
-  Motor claw_left(14, torque_n);
+  Motor claw_right(17,mtr_s_p);
+  Motor claw_left(14, mtr_s_n);
 
   claw_left.set_brake_mode(MOTOR_BRAKE_HOLD);
   claw_right.set_brake_mode(MOTOR_BRAKE_HOLD);
@@ -66,12 +66,17 @@ void autonomous() {
     dr4b_claw(70);
     claw(100);
     dr4b_move(90, 100);
-    move_cm(-60, 200, 40);
+    move_cm(-55, 200, 38);
     claw(0);
     m_turn_up(570, 75);
 
-    m_slide_up(-140, 150);
+    m_slide_up(-250, 150);
+    if(s_side==true){
     move_cm(74, 150, 65);
+  } else {
+    move_cm(76, 150, 65);
+  }
+
     delay(100);
     dr4b_move(0, 30);
     delay(200);
@@ -92,11 +97,14 @@ void autonomous() {
 */
 
   } else { //================================================================================================================
-/*
+
     //bottom autonomous
     claw(100);
-    dr4b_move(70, 100);
+    dr4b_move(100, 100);
+    delay(500);
     claw(0);
-*/
+    delay(200);
+    move_cm(-30, 75, 20);
+
   }
 }
