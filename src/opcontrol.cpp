@@ -90,24 +90,30 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 
 		//scoreing
 		if(master.get_digital(DIGITAL_L1) == 1 && master.get_digital(DIGITAL_L2) == 0){
-			if(score.get_position() < 700){
+			if(score.get_position() < 920){
+				if(score.get_position() > 500){
+					score.move_velocity(50);
+				} else{
 				score.move_velocity(100);
+				}
 			} else {
 				score.move_velocity(0);
 			}
 		}
 		else if(master.get_digital(DIGITAL_L2) == 1 && master.get_digital(DIGITAL_L1) == 0){
-			if(score.get_position() > 150){
-				score.move_velocity(-100);
+			if(score.get_position() > 350){
+				score.move_velocity(-75);
+			} else {
+				score.move_velocity(0);
 			}
 		} else {
 			score.move_velocity(0);
 		}
 
 		if(master.get_digital(DIGITAL_DOWN) == 1){
-			rot_loader.move_absolute(30, 100);
+			rot_loader.move_absolute(40, 100);
 		} else if(master.get_digital(DIGITAL_B) == 1){
-			rot_loader.move_absolute(-60, 100);
+			rot_loader.move_absolute(-110, 100);
 		}
 
 

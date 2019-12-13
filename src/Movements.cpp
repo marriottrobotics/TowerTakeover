@@ -12,7 +12,7 @@ Motor right_back(1, mtr_s_n);
 Motor loader_left(7, mtr_s_n);
 Motor loader_right(8, mtr_s_p);
 Motor score(5, torque_p);
-Motor rot_loader(6, torque_n);
+Motor rot_loader(6, torque_p);
 
 extern bool s_side; //true = red
 extern bool s_pos; //true = mat side
@@ -171,12 +171,12 @@ void Movement::m_slide_up(int distance, int speed){
 
 }
 
-/*
-void Movement::tray_up(bool tray_pos){/*
+
+void Movement::tray_up(bool tray_pos){
   if(tray_pos == true){
-    score.move_absolute(720);
+    score.move_absolute(920, 50);
   } else {
-    score.move_absolute(0);
+    score.move_absolute(320, 50);
   }
 }
 
@@ -187,16 +187,21 @@ void Movement::intake(int speed){
 }
 
 void Movement::intake_rot(bool pos){
-
   if(pos == true){
-    rot_loader.move_absolute(60, 100);
+    rot_loader.move_absolute(70, 100);
   } else {
-    rot_loader.move_absolute(-10, 100);
+    rot_loader.move_absolute(-110, 100);
   }
 
 }
 
+void Movement::move_cm(double distance, double speed, double distance_sustained_speed){
+  distance *= (360/29.845);
+  distance_sustained_speed *= (360/29.845);
+  m_move_sin(distance, speed, distance_sustained_speed);
+}
 
+/*
 
 void Movement::dr4b_move(double degrees, int speed){
   int accuracy = 10;
@@ -238,13 +243,9 @@ void Movement::claw(int speed){
   claw_right.move_velocity(speed);
   delay(20);
 }
-*/
 
-void Movement::move_cm(double distance, double speed, double distance_sustained_speed){
-  distance *= (360/29.845);
-  distance_sustained_speed *= (360/29.845);
-  m_move_sin(distance, speed, distance_sustained_speed);
-}
+
+
 /*
 void Movement::dr4b_safe(double degrees){
   bool positive;

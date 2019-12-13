@@ -28,7 +28,7 @@ void autonomous() {
   Motor loader_left(7, mtr_s_n);
   Motor loader_right(8, mtr_s_p);
   Motor score(5, torque_n);
-  Motor rot_loader(6, torque_n);
+	Motor rot_loader(6, torque_p);
 
   rot_loader.set_brake_mode(MOTOR_BRAKE_HOLD);
 	score.set_brake_mode(MOTOR_BRAKE_HOLD);
@@ -44,9 +44,29 @@ void autonomous() {
       //end of Override
     }
   }
-
+  s_pos = true;
   if(s_pos == true){
     //Top Auton
+    intake_rot(true);
+    intake(-100);
+    delay(500);
+    intake(0);
+    delay(1500);
+    intake(0);
+    tray_up(false);
+    delay(200);
+    m_turn_up(20, 75);
+    m_slide_up(-300, 75);
+    m_turn_up(500, 100);
+    intake(100);
+    move_cm(15, 100, 10);
+    m_move_degrees(1000, 40);
+    delay(200);
+    intake(0);
+    move_cm(-70, 150, 40);
+
+    m_turn_up(-750, 100);
+    move_cm(40, 100, 30);
 
 
   } else { //================================================================================================================

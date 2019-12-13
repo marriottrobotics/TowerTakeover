@@ -12,8 +12,9 @@ namespace Movement{
   void m_move_sin(double distance, double speed, double distance_sustained_speed);
   void move_cm(double distance, double speed, double distance_sustained_speed);
 
-  //void tray_up(bool tray_pos);
-  //void intake(int speed);
+  void tray_up(bool tray_pos);
+  void intake(int speed);
+  void intake_rot(bool pos);
 
   //This needs to be fixed.
   //void alignUltrasonic(int rotateVelocity = 50, int threshold = 0, int delayTime = 5);
