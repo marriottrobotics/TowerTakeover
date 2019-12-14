@@ -34,6 +34,7 @@ void autonomous() {
 	score.set_brake_mode(MOTOR_BRAKE_HOLD);
 	loader_left.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	loader_right.set_brake_mode(MOTOR_BRAKE_BRAKE);
+  bool rot_pos = true;
 
   if(1 == 2){
     while(true){
@@ -46,27 +47,38 @@ void autonomous() {
   }
   s_pos = true;
   if(s_pos == true){
-    //Top Auton
-    intake_rot(true);
+    //Top
     intake(-100);
     delay(500);
-    intake(0);
+    intake(50);
     delay(1500);
     intake(0);
     tray_up(false);
     delay(200);
+    rot_loader.move_relative(20, 100);
+    rot_pos = true;
     m_turn_up(20, 75);
     m_slide_up(-300, 75);
-    m_turn_up(500, 100);
+    m_turn_up(480, 100);
     intake(100);
     move_cm(15, 100, 10);
-    m_move_degrees(1000, 40);
+    intake(100);
+    m_move_degrees(750, 40);
     delay(200);
     intake(0);
-    move_cm(-70, 150, 40);
+    move_cm(-52, 150, 40);
 
-    m_turn_up(-750, 100);
+    m_turn_up(-730, 100);
     move_cm(40, 100, 30);
+    intake(-30);
+    tray_up(true);
+    delay(2000);
+    rot_loader.move_relative(-150, 100);
+    rot_pos = false;
+    tray_up(false);
+    delay(2500);
+    intake(0);
+    move_cm(-20, 10, 100);
 
 
   } else { //================================================================================================================

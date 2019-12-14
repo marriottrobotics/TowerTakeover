@@ -5,20 +5,22 @@
 ADIAnalogIn auto_select(2);
 pros::ADIAnalogIn sensor (1);
 Controller master(CONTROLLER_MASTER);
-Motor left_front(4, mtr_s_p);
-Motor right_front(3, mtr_s_n);
-Motor left_back(2, mtr_s_p);
-Motor right_back(1, mtr_s_n);
-Motor loader_left(7, mtr_s_n);
-Motor loader_right(8, mtr_s_p);
-Motor score(5, torque_p);
-Motor rot_loader(6, torque_p);
+Motor left_front(4, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
+Motor right_front(3, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
+Motor left_back(2, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
+Motor right_back(1, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
+Motor loader_left(7, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
+Motor loader_right(8, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
+Motor score(5, E_MOTOR_GEARSET_36, 0, MOTOR_ENCODER_DEGREES);
+Motor rot_loader(6, E_MOTOR_GEARSET_36, 0, MOTOR_ENCODER_DEGREES);
 
 extern bool s_side; //true = red
 extern bool s_pos; //true = mat side
 bool s_side;
 bool s_pos;
 extern bool m_clawrot = NULL;
+extern double rot_zero;
+double rot_zero;
 
 //bool Movement::red = false;
 //bool Movement::top = false;
@@ -176,7 +178,7 @@ void Movement::tray_up(bool tray_pos){
   if(tray_pos == true){
     score.move_absolute(920, 50);
   } else {
-    score.move_absolute(320, 50);
+    score.move_absolute(300, 50);
   }
 }
 
@@ -187,12 +189,12 @@ void Movement::intake(int speed){
 }
 
 void Movement::intake_rot(bool pos){
-  if(pos == true){
-    rot_loader.move_absolute(70, 100);
+  if(pos){
+    rot_loader.move_absolute(10, 100);
+    delay(20);
   } else {
-    rot_loader.move_absolute(-110, 100);
+    rot_loader.move_absolute(10, 100);
   }
-
 }
 
 void Movement::move_cm(double distance, double speed, double distance_sustained_speed){

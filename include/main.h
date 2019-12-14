@@ -93,6 +93,7 @@ extern Motor rot_loader;
 extern bool s_side;
 extern bool s_pos;
 extern bool override;
+extern bool rot_pos;
 
 #ifdef __cplusplus
 }

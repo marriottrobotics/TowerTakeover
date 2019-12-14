@@ -66,7 +66,7 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 
 	float lerp = 30;
 
-
+	bool rot_pos;
 
 
 
@@ -110,12 +110,13 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 			score.move_velocity(0);
 		}
 
-		if(master.get_digital(DIGITAL_DOWN) == 1){
-			rot_loader.move_absolute(40, 100);
-		} else if(master.get_digital(DIGITAL_B) == 1){
-			rot_loader.move_absolute(-110, 100);
+		if(master.get_digital(DIGITAL_DOWN) == 1 && rot_pos == false){
+			rot_loader.move_relative(160, 100);
+			rot_pos = true;
+		} else if(master.get_digital(DIGITAL_B) == 1 && rot_pos == true){
+			rot_loader.move_relative(-160, 100);
+			rot_pos = false;
 		}
-
 
 
 
@@ -128,11 +129,13 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 
 		//drive stuff
 			//speed mode
+			/*
 		if(master.get_digital(DIGITAL_B) == 1){
 			speed = 1;
 		}else if(master.get_digital(DIGITAL_DOWN) == 1){
 			speed = 2;
 	  }
+		*/
 
 
 		if(abs(master.get_analog(ANALOG_RIGHT_Y)) > gate_fact){
