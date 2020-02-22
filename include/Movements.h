@@ -11,6 +11,7 @@ namespace Movement{
   void m_slide_up(int distance, int speed);
   void m_move_sin(double distance, double speed, double distance_sustained_speed);
   void move_cm(double distance, double speed, double distance_sustained_speed);
+  void pivot(bool close);
 
   void tray_up(bool tray_pos);
   void intake(int speed);

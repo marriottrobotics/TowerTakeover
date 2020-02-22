@@ -2,23 +2,26 @@
 #include <iostream>
 #include <math.h>
 
-ADIAnalogIn auto_select(2);
-pros::ADIAnalogIn sensor (1);
+ADIAnalogIn auto_select (1);
+ADIAnalogIn line_r(3);
+ADIDigitalIn score_bttn(2);
 Controller master(CONTROLLER_MASTER);
-Motor right_front(10, mtr_s_p);
-Motor left_front(1, mtr_s_n);
-Motor right_back(20, mtr_s_n);
-Motor left_back(11, mtr_s_p);
-Motor dr4b_right(15, torque_n);
-Motor dr4b_left(12, torque_p);
-Motor claw_right(17,mtr_s_p);
-Motor claw_left(14, mtr_s_n);
+Motor left_front(1, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
+Motor right_front(2, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
+Motor left_back(11, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
+Motor right_back(12, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
+Motor loader_left(3, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
+Motor loader_right(14, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
+Motor score(4, E_MOTOR_GEARSET_36, 1, MOTOR_ENCODER_DEGREES);
+Motor rot_loader(8, E_MOTOR_GEARSET_36, 0, MOTOR_ENCODER_DEGREES);
 
 extern bool s_side; //true = red
 extern bool s_pos; //true = mat side
 bool s_side;
-bool s_pos;
-extern bool m_clawrot = NULL;
+bool s_pos = true;
+extern double rot_zero;
+double rot_zero;
+bool pivot_closed;
 
 //bool Movement::red = false;
 //bool Movement::top = false;
@@ -171,6 +174,55 @@ void Movement::m_slide_up(int distance, int speed){
 
 }
 
+
+void Movement::tray_up(bool tray_pos){
+  if(tray_pos == true){
+    score.move_absolute(920, 50);
+  } else {
+    score.move_absolute(375, 50);
+  }
+}
+
+void Movement::intake(int speed){
+  loader_left.move_velocity(speed);
+  loader_right.move_velocity(speed);
+
+}
+
+void Movement::intake_rot(bool pos){
+  if(pos){
+    rot_loader.move_absolute(10, 100);
+    delay(20);
+  } else {
+    rot_loader.move_absolute(10, 100);
+  }
+}
+
+void Movement::move_cm(double distance, double speed, double distance_sustained_speed){
+  distance *= (360/29.845);
+  distance_sustained_speed *= (360/29.845);
+  m_move_sin(distance, speed, distance_sustained_speed);
+}
+void Movement::pivot(bool close){
+  if(pivot_closed == false && close == true){
+    rot_loader.move_velocity(100);
+      while(score_bttn.get_value() == false){
+        delay(20);
+      }
+      rot_loader.move_velocity(0);
+      rot_loader.move_relative(110, 100);
+      pivot_closed = true;
+      delay(200);
+
+  }else if(pivot_closed == true && close == false) {
+    rot_loader.move_relative(-250, 100);
+    pivot_closed = false;
+  }
+
+}
+
+/*
+
 void Movement::dr4b_move(double degrees, int speed){
   int accuracy = 10;
   dr4b_left.move_absolute(degrees, speed);
@@ -212,12 +264,9 @@ void Movement::claw(int speed){
   delay(20);
 }
 
-void Movement::move_cm(double distance, double speed, double distance_sustained_speed){
-  distance *= (360/29.845);
-  distance_sustained_speed *= (360/29.845);
-  m_move_sin(distance, speed, distance_sustained_speed);
-}
 
+
+/*
 void Movement::dr4b_safe(double degrees){
   bool positive;
   if(dr4b_left.get_position() - degrees > 0){
@@ -272,3 +321,4 @@ void Movement::dr4b_safe(double degrees){
   claw_left.move_velocity(0);
   claw_left.move_velocity(0);
 }
+*/

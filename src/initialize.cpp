@@ -11,16 +11,18 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-  ADIAnalogIn auto_select(2);
+  ADIAnalogIn auto_select (2);
+  ADIAnalogIn line_r(3);
+  ADIDigitalIn score_bttn(1);
   Controller master(CONTROLLER_MASTER);
-  Motor left_front(4, mtr_s_p);
-	Motor right_front(3, mtr_s_n);
-	Motor left_back(2, mtr_s_p);
-	Motor right_back(1, mtr_s_n);
-  Motor loader_left(7, mtr_s_n);
-  Motor loader_right(8, mtr_s_p);
-  Motor score(5, torque_n);
-  Motor rot_loader(6, torque_n);
+	Motor left_front(1, mtr_s_p);
+	Motor right_front(2, mtr_s_n);
+	Motor left_back(11, mtr_s_p);
+	Motor right_back(12, mtr_s_n);
+  Motor loader_left(3, mtr_s_n);
+  Motor loader_right(14, mtr_s_p);
+  Motor score(4, torque_p);
+	Motor rot_loader(8, torque_p);
   rot_loader.set_brake_mode(MOTOR_BRAKE_HOLD);
 	score.set_brake_mode(MOTOR_BRAKE_HOLD);
 	loader_left.set_brake_mode(MOTOR_BRAKE_BRAKE);
@@ -44,8 +46,9 @@ void disabled() {}
  * starts.
  */
 void competition_initialize() {
+  bool auto_run = false;
   while(true){
-  ADIAnalogIn auto_select(2);
+  ADIAnalogIn auto_select(1);
   Controller master(CONTROLLER_MASTER);
   if(auto_select.get_value() < 2000){
     if(auto_select.get_value() < 1000){

@@ -94,6 +94,8 @@ extern bool s_side;
 extern bool s_pos;
 extern bool override;
 extern bool rot_pos;
+extern bool auto_run;
+extern bool pivot_closed;
 
 #ifdef __cplusplus
 }

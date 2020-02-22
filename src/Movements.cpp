@@ -2,25 +2,26 @@
 #include <iostream>
 #include <math.h>
 
-ADIAnalogIn auto_select(2);
-pros::ADIAnalogIn sensor (1);
+ADIAnalogIn auto_select (1);
+ADIAnalogIn line_r(3);
+ADIDigitalIn score_bttn(2);
 Controller master(CONTROLLER_MASTER);
-Motor left_front(4, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
-Motor right_front(3, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
-Motor left_back(2, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
-Motor right_back(1, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
-Motor loader_left(7, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
-Motor loader_right(8, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
-Motor score(5, E_MOTOR_GEARSET_36, 0, MOTOR_ENCODER_DEGREES);
-Motor rot_loader(6, E_MOTOR_GEARSET_36, 0, MOTOR_ENCODER_DEGREES);
+Motor left_front(1, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
+Motor right_front(2, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
+Motor left_back(11, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
+Motor right_back(12, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
+Motor loader_left(3, E_MOTOR_GEARSET_18, 1, MOTOR_ENCODER_DEGREES);
+Motor loader_right(14, E_MOTOR_GEARSET_18, 0, MOTOR_ENCODER_DEGREES);
+Motor score(4, E_MOTOR_GEARSET_36, 1, MOTOR_ENCODER_DEGREES);
+Motor rot_loader(8, E_MOTOR_GEARSET_36, 0, MOTOR_ENCODER_DEGREES);
 
 extern bool s_side; //true = red
 extern bool s_pos; //true = mat side
 bool s_side;
-bool s_pos;
-extern bool m_clawrot = NULL;
+bool s_pos = true;
 extern double rot_zero;
 double rot_zero;
+bool pivot_closed;
 
 //bool Movement::red = false;
 //bool Movement::top = false;
@@ -178,7 +179,7 @@ void Movement::tray_up(bool tray_pos){
   if(tray_pos == true){
     score.move_absolute(920, 50);
   } else {
-    score.move_absolute(300, 50);
+    score.move_absolute(375, 50);
   }
 }
 
@@ -201,6 +202,23 @@ void Movement::move_cm(double distance, double speed, double distance_sustained_
   distance *= (360/29.845);
   distance_sustained_speed *= (360/29.845);
   m_move_sin(distance, speed, distance_sustained_speed);
+}
+void Movement::pivot(bool close){
+  if(pivot_closed == false && close == true){
+    rot_loader.move_velocity(100);
+      while(score_bttn.get_value() == false){
+        delay(20);
+      }
+      rot_loader.move_velocity(0);
+      rot_loader.move_relative(110, 100);
+      pivot_closed = true;
+      delay(200);
+
+  }else if(pivot_closed == true && close == false) {
+    rot_loader.move_relative(-250, 100);
+    pivot_closed = false;
+  }
+
 }
 
 /*

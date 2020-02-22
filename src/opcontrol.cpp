@@ -20,15 +20,19 @@ void opcontrol() {
 
 	//pros::ADIAnalogIn sensor (1);
 
+	ADIAnalogIn auto_select (3);
+  ADIAnalogIn line_r(1);
+  ADIDigitalIn score_bttn(2);
+
 	Controller master(CONTROLLER_MASTER);
-	Motor left_front(4, mtr_s_p);
-	Motor right_front(3, mtr_s_n);
-	Motor left_back(2, mtr_s_p);
-	Motor right_back(1, mtr_s_n);
-	Motor loader_left(7, mtr_s_n);
-	Motor loader_right(8, mtr_s_p);
-	Motor score(5, torque_n);
-	Motor rot_loader(6, torque_p);
+	Motor left_front(1, mtr_s_p);
+	Motor right_front(2, mtr_s_n);
+	Motor left_back(11, mtr_s_p);
+	Motor right_back(12, mtr_s_n);
+  Motor loader_left(3, mtr_s_n);
+  Motor loader_right(14, mtr_s_p);
+  Motor score(4, torque_n);
+	Motor rot_loader(8, torque_n);
 
 	rot_loader.set_brake_mode(MOTOR_BRAKE_HOLD);
 	score.set_brake_mode(MOTOR_BRAKE_HOLD);
@@ -41,6 +45,8 @@ void opcontrol() {
 	int mtr3 = 0;
 	int mtr4 = 0;
   int sideways;
+
+	int loader_mov = 0;
 
 	int perSecondExe = 0;
 	int secondsInGame = 0;
@@ -67,14 +73,19 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 	float lerp = 30;
 
 	bool rot_pos;
+	bool auto_run;
+
+	if(auto_run == false){
+
+	}
 
 
 
 
 //control loop
 	while (true) {
-
 		//loaders
+		//sucking in an out
 		if(master.get_digital(DIGITAL_R1) == 1 && master.get_digital(DIGITAL_R2) == 0){
 			loader_left.move_velocity(200);
 			loader_right.move_velocity(200);
@@ -90,8 +101,8 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 
 		//scoreing
 		if(master.get_digital(DIGITAL_L1) == 1 && master.get_digital(DIGITAL_L2) == 0){
-			if(score.get_position() < 920){
-				if(score.get_position() > 500){
+			if(score.get_position() < 575){
+				if(score.get_position() > 0){
 					score.move_velocity(50);
 				} else{
 				score.move_velocity(100);
@@ -101,7 +112,7 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 			}
 		}
 		else if(master.get_digital(DIGITAL_L2) == 1 && master.get_digital(DIGITAL_L1) == 0){
-			if(score.get_position() > 350){
+			if(score.get_position() > 0){
 				score.move_velocity(-75);
 			} else {
 				score.move_velocity(0);
@@ -110,13 +121,35 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 			score.move_velocity(0);
 		}
 
-		if(master.get_digital(DIGITAL_DOWN) == 1 && rot_pos == false){
-			rot_loader.move_relative(160, 100);
-			rot_pos = true;
-		} else if(master.get_digital(DIGITAL_B) == 1 && rot_pos == true){
-			rot_loader.move_relative(-160, 100);
-			rot_pos = false;
+
+
+
+
+
+		if(master.get_digital(DIGITAL_UP) == 1 && master.get_digital(DIGITAL_DOWN) == 0){
+			if(rot_loader.get_position() < 1500){
+				if(rot_loader.get_position() > 0){
+					rot_loader.move_velocity(50);
+				} else{
+				rot_loader.move_velocity(100);
+				}
+			} else {
+				rot_loader.move_velocity(0);
+			}
 		}
+		else if(master.get_digital(DIGITAL_DOWN) == 1 && master.get_digital(DIGITAL_UP) == 0){
+			if(rot_loader.get_position() > 0){
+				rot_loader.move_velocity(-75);
+			} else {
+				rot_loader.move_velocity(0);
+			}
+		} else {
+			rot_loader.move_velocity(0);
+		}
+
+
+
+
 
 
 
@@ -160,8 +193,8 @@ initFile(fp, f_initBatteryLvl, f_controllerBattery);
 		left_velocity = 1.5748 * f_joy;
 		turn_fact = 1.1 * master.get_analog(ANALOG_LEFT_X);
 
-		right_velocity -= turn_fact;
-		left_velocity += turn_fact;
+		right_velocity -= turn_fact/1.5;
+		left_velocity += turn_fact/1.5;
 
 		if(right_velocity > 200){
 			right_velocity = 200;
